@@ -181,7 +181,18 @@ ORDER BY 1;
 
 9.If each $1 spent equates to 10 points and sushi has a 2x points multiplier -
  how many points would each customer have?
-
+ 
+SELECT
+  customer_id,
+  SUM(
+  CASE WHEN product_name = 'sushi'
+  THEN (price * 20)
+  ELSE (price * 10)
+  END
+  ) AS total_points
+FROM membership_validation
+GROUP BY customer_id
+ORDER BY customer_id;
 
 
 
