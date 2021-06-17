@@ -1,0 +1,154 @@
+USE dannys_diner;
+
+CREATE TABLE sales(
+customer_id VARCHAR(1),
+order_date  DATE,
+product_id INTEGER
+);
+
+INSERT INTO sales(customer_id,order_date,product_id)
+VALUES('A', '2021-01-01', '1'),
+  ('A', '2021-01-01', '2'),
+  ('A', '2021-01-07', '2'),
+  ('A', '2021-01-10', '3'),
+  ('A', '2021-01-11', '3'),
+  ('A', '2021-01-11', '3'),
+  ('B', '2021-01-01', '2'),
+  ('B', '2021-01-02', '2'),
+  ('B', '2021-01-04', '1'),
+  ('B', '2021-01-11', '1'),
+  ('B', '2021-01-16', '3'),
+  ('B', '2021-02-01', '3'),
+  ('C', '2021-01-01', '3'),
+  ('C', '2021-01-01', '3'),
+  ('C', '2021-01-07', '3');
+  
+CREATE TABLE menu(
+product_id INTEGER,
+product_name varchar(5),
+price INTEGER
+);
+
+INSERT INTO menu
+(product_id,product_name,price)
+VALUES('1','sushi','10'),
+('2','curry','15'),
+('3','ramen','12');
+
+CREATE TABLE members(
+customer_id VARCHAR(1),
+join_date DATE
+);
+
+INSERT INTO members
+(customer_id, join_date)
+VALUES
+('A','2021-01-07'),
+('B','2021-01-09');
+  show tables;
+SELECT * FROM menu;
+SELECT * FROM sales;
+SELECT * FROM members;
+
+1.   What is the total amount each customer spent at the restaurant
+
+SELECT DISTINCT(s.customer_id), sum(m.price)
+FROM menu m 
+JOIN sales s
+ON s.product_id = m.product_id
+group by s.customer_id;
+
+2. How many days has each customer visited the restaurant?
+
+SELECT count(order_date), customer_id from sales
+group by customer_id;
+
+3.What was the first item from the menu purchased by each customer?
+
+SELECT s.customer_id, s.order_date, m.product_name FROM sales s
+JOIN menu m
+ON m.product_id = s.product_id
+group by customer_id;
+
+4.What is the most purchased item on the menu and how many times was it purchased by all customers?
+ 
+SELECT count(m.product_id) as no_of_times_purchased, m.product_name as Most_purchased_Product, sum(m.price) as total_price FROM menu m
+JOIN sales s
+ON s.product_id = m.product_id
+group by m.product_id
+order by total_price
+desc
+limit 1;
+SELECT * FROM menu;
+SELECT * FROM sales;
+SELECT s.customer_id,count(m.product_name)
+FROM menu m 
+INNER JOIN sales s
+ON m.product_id = s.product_id
+where m.product_name = 'Ramen'
+group by 1;
+
+/**Most purchased item is Ramen and its purchased 8 times**/
+
+5.Which item was the most popular for each customer ?
+
+SELECT Temp.customer_id,Temp.product_name
+FROM (SELECT count(m.product_name) as product_count,m.product_name ,s.customer_id 
+FROM sales s
+JOIN menu m
+ON m.product_id = s.product_id
+GROUP BY s.customer_id, m.product_name 
+ORDER BY 1
+desc) AS Temp
+GROUP BY 1
+ORDER BY 1;		
+
+																						
+/**A = Sushi
+B = Curry
+C = Ramen**/
+
+6.Which item was purchased first by the customer after they became a member?
+
+SELECT mb.customer_id, mb.join_date,m.product_name FROM members mb
+JOIN sales s
+ON mb.customer_id = mb.customer_id
+JOIN menu m
+ON m.product_id = s.product_id
+group by mb.customer_id;	
+
+7.Which item was purchased just before the customer became a member?
+
+SELECT s.customer_id, m.product_name
+FROM members mb, sales s, menu m
+WHERE mb.customer_id = s.customer_id
+AND s.product_id = m.product_id
+AND S.order_date< mb.join_date
+GROUP BY 1
+ORDER BY 1,s.order_date;
+
+8.What is the total items and amount spent for each member before they became a member ?
+
+SELECT * FROM members;
+SELECT * FROM menu;
+SELECT * FROM sales;
+SELECT s.customer_id, COUNT(m.product_name) as total_item, sum(m.price) as Total_amount_spent
+FROM members mb, sales s, menu m
+WHERE mb.customer_id = s.customer_id
+AND s.product_id = m.product_id
+AND S.order_date< mb.join_date
+GROUP BY 1
+ORDER BY 1;
+
+9.If each $1 spent equates to 10 points and sushi has a 2x points multiplier -
+ how many points would each customer have?
+
+
+
+
+
+ 
+ 10.In the first week after a customer joins the program 
+ (including their join date) they earn 2x points on all items, not just sushi -
+ how many points do customer A and B have at the end of January ?
+																																
