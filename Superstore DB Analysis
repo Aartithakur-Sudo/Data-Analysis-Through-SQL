@@ -1,0 +1,75 @@
+
+
+1. WRITE A QUERY TO DISPLAY THE CUSTOMER_NAME AND CUSTOMER SEGMENT USING ALIAS 
+NAME “CUSTOMER NAME", "CUSTOMER SEGMENT" FROM TABLE CUST_DIMEN.
+
+
+SELECT * FROM CUST_DIMEN;
+SELECT CUSTOMER_NAME"CUSTOMER NAME",CUSTOMER_SEGMENT"CUSTOMER SEGMENT"
+FROM CUST_DIMEN;
+
+2. WRITE A QUERY TO FIND ALL THE DETAILS OF THE CUSTOMER FROM THE TABLE CUST_DIMEN 
+ORDER BY DESC.
+
+SELECT * FROM CUST_DIMEN ORDER BY CUSTOMER_NAME DESC;
+
+3. WRITE A QUERY TO GET THE ORDER ID, ORDER DATE FROM TABLE ORDERS_DIMEN WHERE 
+‘ORDER PRIORITY’ IS HIGH.
+
+SELECT * FROM ORDERS_DIMEN ORDER_ID WHERE ORDER_PRIORITY LIKE '%HIGH';
+
+4. FIND THE TOTAL AND THE AVERAGE SALES (DISPLAY TOTAL_SALES AND AVG_SALES)
+
+SELECT ROUND(SUM(SALES),2) AS 'TOTAL SALES', ROUND(AVG(SALES),2) AS 'AVERAGE 
+SALES'
+FROM MARKET_FACT;'
+
+5. Write a query to get the maximum and minimum sales from maket_fact table.
+
+SELECT MAX(Sales) Maximum, MIN(Sales) Minimum 
+FROM market_fact
+
+6. Display the number of customers in each region in decreasing order of no_of_customers. 
+The result should contain columns Region, no_of_customers
+
+SELECT DISTINCT(Region), COUNT(*) AS no_of_cust FROM cust_dimen
+GROUP BY Region
+ORDER BY no_of_cust DESC;
+
+7. Find the region having maximum customers (display the region name and 
+max(no_of_customers)
+
+SELECT Region, count(Cust_id) as "No. of Customers"
+from cust_dimen
+group by Region
+order by count(Cust_id) DESC
+LIMIT 1;
+
+8. Find all the customers from Atlantic region who have ever purchased ‘TABLES’ and the 
+number of tables purchased (display the customer name, no_of_tables purchased) 
+
+
+Select c.Region as "Region", c.Customer_Name as "Customer Name", 
+p.Product_Sub_Category as "Product Sub Category", 
+ sum(m.Order_Quantity) as "Order Quantity"
+from market_fact m 
+join cust_dimen c on m.Cust_id = c.Cust_id
+ join prod_dimen p on m.Prod_id = p.Prod_id
+where c.Region = "ATLANTIC" and p.Product_Sub_Category = "TABLES"
+group by c.Customer_Name
+Order by sum(m.Order_Quantity) DESC;
+
+
+9. Find all the customers from Ontario province who own Small Business. (display the 
+customer name, no of small business owners) 
+
+select CUstomer_name, Region, Customer_segment as no_of_small_Owner from cust_dimen 
+where Region = 'Ontario' and Customer_Segment = "small Business";
+
+10. Find the number and id of products sold in decreasing order of products sold (display 
+product id, no_of_products sold) 
+
+SELECT Prod_id, sum(Order_Quantity) as "no_of_products sold"
+from market_fact
+group by Prod_id
+order by sum(Order_Quantity) DESC;
