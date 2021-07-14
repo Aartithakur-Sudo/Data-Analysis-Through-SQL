@@ -61,6 +61,6 @@ https://github.com/Aartithakur-Sudo/Data-Analysis-Through-SQL/blob/711425e506fca
 
 
 
-the-blunder-English.pdf
+SELECT CEIL(AVG(Salary)-AVG(REPLACE(Salary,'0',''))) FROM EMPLOYEES;
 
 
