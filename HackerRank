@@ -14,6 +14,53 @@ SELECT CASE
     FROM BST
     ORDER BY N ASC;
     
+2.Query a count of the number of cities in CITY having a Population larger than .
     
-    2.
+    SELECT COUNT(*) FROM CITY
+WHERE POPULATION >100000;
     
+
+
+3.Query the total population of all cities in CITY where District is California
+
+SELECT SUM(POPULATION) AS TOTAL_SUM
+FROM CITY WHERE DISTRICT ='CALIFORNIA';
+
+
+
+4.Query the average population of all cities in CITY where District is California.
+
+SELECT AVG(POPULATION) AS AVG_POPULATION
+FROM CITY WHERE DISTRICT ='CALIFORNIA';
+
+
+
+5.Query the average population for all cities in CITY, rounded down to the nearest integer.
+
+SELECT FLOOR(AVG(POPULATION)) AS AVG_POPULATION FROM CITY;
+
+
+
+
+6.Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+
+SELECT SUM(POPULATION) AS TOTAL_SUM FROM CITY WHERE COUNTRYCODE ='JPN';
+
+
+7.Query the difference between the maximum and minimum populations in CITY.
+
+SELECT (MAX(POPULATION)-MIN(POPULATION)) AS difference FROM CITY;
+
+
+8.Samantha was tasked with calculating the average monthly salaries for all employees in the EMPLOYEES table, but did not realize her keyboard's  key was broken until after completing the calculation. She wants your help finding the difference between her miscalculation (using salaries with any zeros removed), and the actual average salary.
+
+Write a query calculating the amount of error (i.e.:  average monthly salaries), and round it up to the next integer.
+
+
+https://github.com/Aartithakur-Sudo/Data-Analysis-Through-SQL/blob/711425e506fca36c841587be87660c4b865f9980/the-blunder-English.pdf
+
+
+
+
+
+
