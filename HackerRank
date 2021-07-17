@@ -1,3 +1,8 @@
+![Screenshot 2021-07-17 105032](https://user-images.githubusercontent.com/76874359/126027776-44ccb603-c36c-431e-a7cf-a3642aeb1dad.png)
+
+
+
+
 1. You are given a table, BST, containing two columns: N and P, where N represents the value of a node in Binary Tree, and P is the parent of N.
 Write a query to find the node type of Binary Tree ordered by the value of the node. Output one of the following for each node:
 
@@ -40,8 +45,6 @@ FROM CITY WHERE DISTRICT ='CALIFORNIA';
 SELECT FLOOR(AVG(POPULATION)) AS AVG_POPULATION FROM CITY;
 
 
-
-
 6.Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
 
 SELECT SUM(POPULATION) AS TOTAL_SUM FROM CITY WHERE COUNTRYCODE ='JPN';
@@ -57,22 +60,83 @@ SELECT (MAX(POPULATION)-MIN(POPULATION)) AS difference FROM CITY;
 Write a query calculating the amount of error (i.e.:  average monthly salaries), and round it up to the next integer.
 
 
-https://github.com/Aartithakur-Sudo/Data-Analysis-Through-SQL/blob/711425e506fca36c841587be87660c4b865f9980/the-blunder-English.pdf
-
-
-
 SELECT CEIL(AVG(Salary)-AVG(REPLACE(Salary,'0',''))) FROM EMPLOYEES;
 
 9. We define an employee's total earnings to be their monthly salary*months worked, and the maximum total earnings to be the maximum total earnings for any employee in the Employee table. 
 Write a query to find the maximum total earnings for all employees 
-as well as the total number of employees who have maximum total earnings. Then print these values as  space-separated integers.
+as well as the total number of employees who have maximum total earnings. Then print these values as  2 space-separated integers.
 
-
-![Screenshot 2021-07-17 105032](https://user-images.githubusercontent.com/76874359/126027212-cc79814e-9f4b-4802-9b68-a6d78a75f608.png)
-![Screenshot 2021-07-17 105121](https://user-images.githubusercontent.com/76874359/126027216-d02cc6bb-ddaa-4aed-b037-9868605db492.png)
-
+where employee_id is an employee's ID number, name is their name, months is the total number of months they've been working for the company, and salary is the their monthly salary
 
 
 
+SELECT (months*salary) as Total_earnings , COUNT(*) FROM EMPLOYEE
+GROUP BY 1
+DESC
+LIMIT 1;
 
 
+
+
+
+10. Query the following two values from the STATION table:
+
+1. The sum of all values in LAT_N rounded to a scale of  decimal places.
+2. The sum of all values in LONG_W rounded to a scale of  decimal places. 
+
+
+
+SELECT ROUND(SUM(LAT_N), 2) AS lat, ROUND((SUM(LONG_W), 2) AS lon FROM STATION ;
+
+
+
+
+11. Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.7880 and less than 137.2345. Truncate your answer to 4 decimal places.
+
+
+
+
+SELECT ROUND(SUM(LAT_N), 4) AS lat FROM STATION
+WHERE LAT_N >38.7880 AND LAT_N< 137.2345;
+
+
+12.Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345 . Truncate your answer to  4 decimal places.
+
+
+SELECT ROUND(MAX(LAT_N),4) FROM STATION
+WHERE LAT_N <137.2345;
+
+
+13.Query the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) in STATION that is less than 137.2345 . Round your answer to 4 decimal placeS
+
+Select ROUND(LONG_W,4) from STATION WHERE LAT_N = (SELECT MAX(LAT_N) FROM STATION WHERE LAT_N<137.2345);
+
+
+
+14.
+Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 38.7780. Round your answer to 4  decimal places.
+
+
+SELECT ROUND(MIN(LAT_N),4) FROM STATION WHERE LAT_N >38.7780;
+
+
+
+15. /*
+Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to  4 decimal places.
+*/
+SELECT ROUND(LONG_W,4) FROM STATION 
+WHERE LAT_N= (SELECT MIN(LAT_N) FROM STATION WHERE LAT_N >38.7780);
+     
+     
+     
+16./*
+Consider P1(A,B) aNd P2(c,d)  to be two points on a 2D plane.
+ 
+ a happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
+ b happens to equal the minimum value in Western Longitude (LONG_W in STATION).
+ c happens to equal the maximum value in Northern Latitude (LAT_N in STATION).
+ d happens to equal the maximum value in Western Longitude (LONG_W in STATION).
+Query the Manhattan Distance between points p1 and p2 and round it to a scale of  decimal places.
+ In a plane with p1 at (x1, y1) and p2 at (x2, y2), it is |x1 - x2| + |y1 - y2|.*/
+ 
+SELECT ROUND( MAX(lat_n)-MIN(lat_n) + MAX(long_w)-MIN(long_w), 4) AS distance FROM Station;
