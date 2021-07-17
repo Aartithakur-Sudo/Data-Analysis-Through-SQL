@@ -1,0 +1,111 @@
+use hr;
+show tables;
+select * from countries;
+select * from departments;
+select * from emp_details_view;
+select * from job_history;
+select * from jobs;
+select * from locations;
+select * from regions;
+
+# 2nd highest salary
+
+SELECT employee_id,max(salary) from emp_details_view
+where salary < (SELECT max(salary) from emp_details_view);
+
+
+
+
+
+# 3rd highest salary
+
+SELECT employee_id, MAX(salary) as Max_salary 
+FROM emp_details_view
+where salary < (SELECT MAX(SALARY) 
+			FROM emp_details_view
+            where salary < (SELECT MAX(SALARY) 
+            FROM emp_details_view));
+            
+            
+            
+            
+
+#what if the multiple employees have the same salary and you're suppose to find the 4th highest salary
+
+SELECT employee_id, MAX(salary) as Max_salary 
+FROM emp_details_view
+where salary < (SELECT MAX(distinct(SALARY))
+			FROM emp_details_view
+            where salary < (SELECT MAX(SALARY) 
+            FROM emp_details_view));
+            
+
+select * from emp_details_view
+where salary = (select DISTINCT(salary)
+from emp_details_view order by SALARY limit 3,1); 
+
+SELECT employee_id, MAX(distinct(salary)) as Max_salary 
+FROM emp_details_view
+where salary < (SELECT MAX(SALARY) 
+			FROM emp_details_view
+            where salary < (SELECT MAX(SALARY) 
+            FROM emp_details_view 
+            WHERE salary <(SELECT max(salary) 
+            FROM  emp_details_view )));
+            
+            
+            
+#Department wise Highest Salary
+
+select * from emp_details_view;
+select * from departments;
+select d.department_id , Max(e.salary) from emp_details_view e
+JOIN departments d
+on d.department_id = e.department_id
+group by department_id
+order by 1,2
+desc;
+
+
+
+#Duplicate Records 
+select * from emp_details_view;
+SELECT employee_id, job_id,manager_id,department_id,location_id,first_name,last_name,salary
+from emp_details_view
+GROUP BY employee_id,first_name
+HAVING COUNT(*) >1;
+
+
+
+#even or Odd number
+select (employee_id%2=0) as OE from emp_details_view;
+
+SELECT First_name, employee_id,
+CASE
+	WHEN employee_id %2=0
+	THEN 'Even'
+    ELSE 'Odd'
+    END AS RESULT
+    FROM emp_details_view;
+ 
+ 
+ 
+ # concat 2 columns
+SELECT * from emp_details_view;
+SELECT CONCAT(first_name,' ', last_name) as Name from emp_details_view;
+
+
+
+# pattern Matching
+SELECT * from emp_details_view ;
+
+SELECT first_name 
+from emp_details_view
+WHERE first_name like '%m_'
+order by 1;
+ 
+ 
+ 
+ 
+ 
+																														
