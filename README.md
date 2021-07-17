@@ -1,3 +1,3 @@
 # Data-Analysis-Through-SQL
 
-![Screenshot 2021-07-17 105032](https://user-images.githubusercontent.com/76874359/126026713-d9bfb64f-030a-43f5-85d9-d742c1bf6635.png)
+![mysql-or-my-sql](https://user-images.githubusercontent.com/76874359/126027143-02966f12-9d29-4036-a783-13105a391832.jpg)
