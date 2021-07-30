@@ -140,3 +140,73 @@ Query the Manhattan Distance between points p1 and p2 and round it to a scale of
  In a plane with p1 at (x1, y1) and p2 at (x2, y2), it is |x1 - x2| + |y1 - y2|.*/
  
 SELECT ROUND( MAX(lat_n)-MIN(lat_n) + MAX(long_w)-MIN(long_w), 4) AS distance FROM Station;
+
+
+
+17.Query all columns for all American cities in the CITY table with populations larger than 100000. The CountryCode for America is USA.
+
+The CITY table is described as follows:
+
+
+
+Solution - select * from city
+where population >100000 and countrycode ='USA';
+
+18. Write a query to print all prime numbers less than or equal to . Print your result on a single line, and use the ampersand () character as your separator (instead of a space).
+
+For example, the output for all prime numbers  would be:
+
+
+select '2&3&5&7&11&13&17&19&23&29&31&37&41&43&47&53&59&61&67&71&73&79&83&89&97&101&103&107&109&113&127&131&137&139&149&151&157&163&167&173&179&181&191&193&197&199&211&223&227&229&233&239&241&251&257&263&269&271&277&281&283&293&307&311&313&317&331&337&347&349&353&359&367&373&379&383&389&397&401&409&419&421&431&433&439&443&449&457&461&463&467&479&487&491&499&503&509&521&523&541&547&557&563&569&571&577&587&593&599&601&607&613&617&619&631&641&643&647&653&659&661&673&677&683&691&701&709&719&727&733&739&743&751&757&761&769&773&787&797&809&811&821&823&827&829&839&853&857&859&863&877&881&883&887&907&911&919&929&937&941&947&953&967&971&977&983&991&997'
+
+
+
+19.You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks.
+
+
+
+Grades contains the following data:
+
+
+
+Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. Ketty doesn't want the NAMES of those students who received a grade lower than 8. The report must be in descending order by grade -- i.e. higher grades are entered first. If there is more than one student with the same grade (8-10) assigned to them, order those particular students by their name alphabetically. Finally, if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+
+Write a query to help Eve.
+
+SELECT IF(GRADE < 8, NULL, NAME), GRADE, MARKS
+FROM STUDENTS JOIN GRADES
+WHERE MARKS BETWEEN MIN_MARK AND MAX_MARK
+ORDER BY GRADE DESC, NAME
+
+
+20.Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
+
+Explanation
+
+Hacker 86870 got a score of 30 for challenge 71055 with a difficulty level of 2, so 86870 earned a full score for this challenge.
+
+Hacker 90411 got a score of 30 for challenge 71055 with a difficulty level of 2, so 90411 earned a full score for this challenge.
+
+Hacker 90411 got a score of 100 for challenge 66730 with a difficulty level of 6, so 90411 earned a full score for this challenge.
+
+Only hacker 90411 managed to earn a full score for more than one challenge, so we print the their hacker_id and name as  space-separated values.
+
+
+
+
+
+
+
+
+select h.hacker_id, h.name
+from submissions s
+inner join challenges c
+on s.challenge_id = c.challenge_id
+inner join difficulty d
+on c.difficulty_level = d.difficulty_level 
+inner join hackers h
+on s.hacker_id = h.hacker_id
+where s.score = d.score and c.difficulty_level = d.difficulty_level
+group by h.hacker_id, h.name
+having count(s.hacker_id) > 1
+order by count(s.hacker_id) desc, s.hacker_id asc
