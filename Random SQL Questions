@@ -103,9 +103,46 @@ SELECT first_name
 from emp_details_view
 WHERE first_name like '%m_'
 order by 1;
+
+
+
+#Increase income of all employees by 5% in a table
+
+UPDATE employees
+SET income = income +(income*5/100);
+
+#Find names of employees working in department 'ABC'
+SELECT name FROM employees 
+where department = 'ABC';
+
+#Print details off emplpoyees whose first name ends with 'A' and contains 6 alphabets
+SELECT * from employees
+where name like'_____a'
+
+#print details of employees whose salary lies between 10000 and 50000
+
+SELECT * from employees
+where salary between 10000 and 50000;
+ 
+ # find names of the employees starting with 'A'
+ SELECT FROM employees
+ where name like'A%'
  
  
+ #Fetch only the first name from full name column
  
- 
- 
-																														
+ SELECT substring(fullname,0,charindex(' ',fullname))
+ from employees;
+
+#fetch duplicate records from a table;
+select emp_id, dept, count(*)
+from employees
+group by emp_id,dept
+having count(*)>1;
+
+#Remove duplicates
+DELETE from employees
+where empid in (SELECT emp_id, dept, count(*)
+from employees
+group by emp_id,dept
+having count(*)>1;)
